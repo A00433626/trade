@@ -16,18 +16,15 @@ class InternalApp extends Component {
     hasCalledApi:false,
 }
   responseGoogle=(response,e)=>{
-console.log(e,response);
     if(response.error)
     {
-      localStorage.setItem('user',)
       this.setState({isAuthenticated:false})
     }
     else if(response.profileObj)
     {
       console.log(response.profileObj);
-      localStorage.setItem('user',response.profileObj)
+      localStorage.setItem(response.profileObj.givenName,JSON.stringify([]))
       this.setState({isAuthenticated:true,userObject:response.profileObj});
-      // RefreshTokenSetup(response);
       e.history.replace("./dashboard")
     }
   }
@@ -40,13 +37,12 @@ console.log(e,response);
 
   }
   render() { 
-    console.log(this.props);
     return (
       <div className='App'>
       <BrowserRouter>
          <Switch>
             <Route exact path='/login' render={(props) => (<LoginForm {...props} onChange={this.responseGoogle}/>)}></Route>
-            <Route path='/dashboard' render={(props) => (<Dashboard/>)}></Route>
+            <Route path='/dashboard' render={(props) => (<Dashboard user={this.state.userObject}/>)}></Route>
             <Route path='/accountsummary' render={(props) => (<AccountSummary signOut={()=>this.handleSignOut()} {...props}/>)}></Route>
             <Redirect from='/' to='/login' />
           </Switch> 

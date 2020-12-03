@@ -37,7 +37,7 @@ class Dashboard extends Component {
          </div>
          <div className="app-body">
             <div className="main-body-container">
-              <MainDashboard hideSpinner={this.hideSpinner} showSpinner={this.state.showSpinner} />
+              <MainDashboard hideSpinner={this.hideSpinner} user={this.props.user} showSpinner={this.state.showSpinner} />
             </div>
          </div>
       </div>

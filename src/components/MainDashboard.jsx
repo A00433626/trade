@@ -24,6 +24,8 @@ class MainDashboard extends Component {
           this.connection.onmessage = this.saveNewStockValues;
           // console.log(this.connection.onmessage);
           this.connection.onclose = () => { this.setState({connectionError: true}) }
+          // let data=[];
+          // localStorage.setItem('user1',JSON.stringify(data));
         }
       
         saveNewStockValues = (event) => {
@@ -97,7 +99,7 @@ class MainDashboard extends Component {
                 <StocksGraph stocks={this.state.stocks} />
               </div>
               <div>
-               <ClientStock deafaultAmount={this.state.deafaultAmount} stocks={this.state.stocks}/>
+               <ClientStock user={this.props.user} deafaultAmount={this.state.deafaultAmount} stocks={this.state.stocks}/>
               </div>
               <div className={ this.props.showSpinner ? 'modal is-active' : 'modal' }>
                 <div className="modal-background"></div>

@@ -70,7 +70,6 @@ class StocksGraph extends React.Component {
   }
 
   render() {
-    console.log("inhere");
     return (
       <div className={'card column'} style={{margin:'10px'}} >
         <div className='card-header'>
