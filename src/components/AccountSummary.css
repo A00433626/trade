@@ -1,0 +1,112 @@
+.account-summary-container{
+    /* background-color: red; */
+    /* margin: 20px; */
+    margin-top: 20px;
+    padding: 20px;
+    max-height: 60rem;
+    min-height:40rem;
+}
+
+.account-summary-image{
+    height: 200px;
+    display: flex;
+    justify-content: center;
+}
+.account-summary-image img{
+border-radius: 50%;
+background-color: white;
+width:200px;
+}
+.account-summary-card-body{
+    background-color: white;
+    min-height: 20rem;
+    overflow: auto;
+    border-style: none !important;
+	overflow: hidden !important;
+	border-radius: 0.75rem !important;
+	-webkit-box-shadow: 0px 0px 4px 0px rgba(199, 199, 199, 1) !important;
+	-moz-box-shadow: 0px 0px 4px 0px rgba(199, 199, 199, 1) !important;
+	box-shadow: 0px 0px 4px 0px rgba(199, 199, 199, 1) !important;
+    background-color: white;
+    padding: 5px;
+    margin: 10px;
+}
+.account-summary-address-information-conatainer,
+.account-summary-personal-information-conatainer{
+    border: 1px solid red !important;
+    min-height: 10rem;
+    margin: 15px;
+    padding: 10px;
+}
+.account-summary-name-information-row,
+.account-summary-age-information-row,
+.account-summary-phone-information-row,
+.account-summary-street-information-row,
+.account-summary-city-information-row,
+.account-summary-state-information-row,
+.account-summary-country-information-row,
+.account-summary-postal-information-row{
+    display: flex;
+    justify-self: space-between;
+    align-items: center;
+}
+
+.account-summary-signout{
+    display: flex !important;
+    justify-content: center !important;
+    
+}
+.account-summary-name-label,
+.account-summary-age-label,
+.account-summary-phone-label,
+.account-summary-street-label,
+.account-summary-city-label,
+.account-summary-postal-label,
+.account-summary-country-label{
+    font-weight: bold;
+    margin: 10px;
+    padding: 10px;
+}
+
+
+
+@media(max-width:500px){
+ 
+.account-summary-container{
+    margin: 10px 0 0 0 !important;
+}
+.account-summary-name-information-row,
+.account-summary-age-information-row,
+.account-summary-phone-information-row,
+.account-summary-street-information-row,
+.account-summary-city-information-row,
+.account-summary-state-information-row,
+.account-summary-country-information-row,
+.account-summary-postal-information-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+}
+.account-summary-name-label,
+.account-summary-age-label,
+.account-summary-phone-label,
+.account-summary-street-label,
+.account-summary-city-label,
+.account-summary-postal-label,
+.account-summary-country-label{
+    padding: 0 5px;
+    margin: 0 5px;
+    font-weight: bold;
+}
+.account-summary-name,
+.account-summary-age,
+.account-summary-phone,
+.account-summary-street,
+.account-summary-city,
+.account-summary-postal,
+.account-summary-country{
+    padding: 0 5px;
+    margin: 0 5px; 
+    text-align: right;
+}
+}
