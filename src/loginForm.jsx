@@ -10,31 +10,6 @@ class LoginForm extends Component{
         errorMessage:null,
         userObject:null,
     }
-      // responseGoogle=(response)=>{
-      //   if(response.error)
-      //   {
-      //     this.setState({isAuthenticated:false})
-      //   }
-      //   else if(response.profileObj)
-      //   {
-      //     this.setState({isAuthenticated:true,userObject:response.profileObj})
-      //     this.props.history.push("./dashboard")
-      //   }
-      // }
-    // validateForm=()=>{
-      
-       
-    // } 
-    // handleLogin=()=>{
-    //     console.log('clicked');
-    //     <GoogleLogin
-    //     clientId="705392616254-tpjvpal0kv0dvq3vem4ajbherauooj6c.apps.googleusercontent.com"
-    //     buttonText="Login"
-    //     onSuccess={this.responseGoogle}
-    //     onFailure={this.responseGoogle}
-    //     cookiePolicy={'single_host_origin'}
-    //   />
-    // }
     render() { 
         console.log(this.props);
         
@@ -55,9 +30,6 @@ class LoginForm extends Component{
                         onFailure={()=>this.props.onChange(this.props)}
                         cookiePolicy={'single_host_origin'}
                     />
-                    {/* <Button block size="lg" type="submit" onClick={()=>this.props.onSubmit()}>
-                          Login
-                    </Button> */}
                         </div> 
                     </div>
                     </Card.Body>

@@ -5,7 +5,6 @@ import StocksGraph from "./StocksGraph.jsx";
 import StocksLoaderStatus from "./StocksLoaderStatus.jsx";
 import './MainDashboard.css';
 import ClientStock from './clientStocks/ClientStock.jsx';
-import {Card,Modal,Button,Table,Row,Col,Form} from 'react-bootstrap'
 
 const stocksUrl = 'ws://stocks.mnet.website/';
 

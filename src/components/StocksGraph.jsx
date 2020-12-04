@@ -65,9 +65,9 @@ class StocksGraph extends React.Component {
     })
   }
 
-  resetZoom = () => {
-    this.refs.chart.chartInstance.resetZoom();
-  }
+  // resetZoom = () => {
+  //   this.refs.chart.chartInstance.resetZoom();
+  // }
 
   render() {
     return (
@@ -84,7 +84,7 @@ class StocksGraph extends React.Component {
               this.refs.chart.chartInstance.data.datasets.length > 0 ? 'Scroll/pinch to zoom, drag to pan.' : 'Click on any stocks on your left to see graphs.'
             }
           </p>
-          <button className="button is-small is-pulled-right" onClick={this.resetZoom}>Reset zoom</button>
+          {/* <button className="button is-small is-pulled-right" onClick={this.resetZoom}>Reset zoom</button> */}
           <Line
             data={{datasets: []}}
             options={chartJsConfig}

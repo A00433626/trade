@@ -7,7 +7,6 @@ import LoginForm from './loginForm';
 import Dashboard from '/Users/mcda/Desktop/Perennia Work/trade/src/components/Dashboard.jsx'
 import AccountSummary from '/Users/mcda/Desktop/Perennia Work/trade/src/components/AccountSummary.jsx';
 import {RefreshTokenSetup} from '/Users/mcda/Desktop/Perennia Work/trade/src/utils/RefreshTokenSetup.jsx'
-import ProtectedRoute from '/Users/mcda/Desktop/Perennia Work/trade/src/ProtectedRoute.jsx';
 class InternalApp extends Component {
   state = {
     isAuthenticated:false,
