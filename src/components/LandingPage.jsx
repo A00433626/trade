@@ -2,13 +2,10 @@ import React, { Component } from 'react'
 import { Dropdown } from 'react-bootstrap';
 import './LandingPage.css';
 import {Avatar} from '@material-ui/core';
+import LogoutButton from './LogoutButton';
 
 class LandingPage extends Component{
     state = {   }
-    dropDownClicked=()=>{
-        console.log('clicked');
-        
-    }
     render() { 
        return (
      <div className="main-conatianer-header">
@@ -28,7 +25,7 @@ class LandingPage extends Component{
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item href="/accountsummary">Account </Dropdown.Item>
-                <Dropdown.Item href="/login">Logout</Dropdown.Item>
+                <Dropdown.Item href="/"><LogoutButton/></Dropdown.Item>
               </Dropdown.Menu>
           </Dropdown>
           </div>

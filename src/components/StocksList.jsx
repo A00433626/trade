@@ -5,7 +5,7 @@ import MarketTrendArrow from './MarketTrendArrow.jsx'
 import './StocksList.css'
 const StocksList = (props) => {
   return (
-    <div className='card column is-one-third' id='stocks_list'>
+    <div className='card' id='stocks_list'>
       <div className='card-header'>
         <div className='card-header-title'>
           Stocks
@@ -21,7 +21,7 @@ const StocksList = (props) => {
           <button className='button is-small' onClick={props.resetData}>Clear history</button>
         </div>
       </div>
-      <div className='card-content'>
+      <div className='card-content px-2'>
         { props.areStocksLoaded() ? <p className='is-size-7 has-text-info'>Click on a stock to select/unselect</p> : null }
         <table className='table is-bordered'>
           <thead>

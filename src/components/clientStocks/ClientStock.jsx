@@ -22,60 +22,79 @@ class ClientStock extends Component {
       else return false;
     }
     buyStocks=()=>{
-      let {quantity,selectedStock,purchasedStocks,localUser}=this.state;
-      const {stocks}=this.props;
+      let {quantity,selectedStock,purchasedStocks,deafaultAmount}=this.state;
       let flag=0;
+      let tempdeafaultAmount=deafaultAmount;
       const valid=this.validation();
-       quantity=parseInt(quantity);
+      quantity=parseInt(quantity);
        if(valid){
-         let total,myShares=0;
+         let myShares=0,buyingPrice=0;
          myShares+=quantity;
-         let shareValue=selectedStock && stocks[selectedStock].current_value.toFixed(2);
-         total=shareValue*quantity;
         if(Object.keys(purchasedStocks).length===0)
         {
-            purchasedStocks[selectedStock]={"quantity":quantity, "myShares":myShares}
+          buyingPrice=(this.props.stocks[selectedStock].current_value).toFixed(2);
+          tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
+          purchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
          }
          else{
            //To find the existing stock
           Object.keys(purchasedStocks).map(stock=>{
+            buyingPrice=(this.props.stocks[selectedStock].current_value).toFixed(2);
             if(stock===selectedStock)
             {
               myShares=purchasedStocks[stock].myShares+purchasedStocks[stock].quantity;
-              purchasedStocks[selectedStock]={"quantity":quantity, "myShares":myShares}
+              tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
+              purchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
               flag=1;
             }
           })
           //To add the new stock in the existing list
           if(!flag){
-            purchasedStocks[selectedStock]={"quantity":quantity, "myShares":myShares}
+            tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
+            purchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
           }
          }
             }
        else{
          alert("Please upload data properly");
        }
-
-     console.log(Object.keys(purchasedStocks).length,typeof purchasedStocks,purchasedStocks);
       // localStorage.setItem(this.props.user.givenName.toLowerCase(),JSON.stringify(purchasedStocks));
-      this.setState({purchasedStocks})
+      this.setState({purchasedStocks,deafaultAmount:tempdeafaultAmount})
     }
     sellStocks=(stock)=>{
-      const {purchasedStocks}=this.state;
-      let temppurchasedStocks={...purchasedStocks};
-      delete(temppurchasedStocks[stock]);
-      this.setState({purchasedStocks:temppurchasedStocks});
+     const {deafaultAmount,purchasedStocks}=this.state;
+     const {stocks}=this.props;
+     let currentAmount= this.getAmount(purchasedStocks,deafaultAmount);
+     let currentStockValue=parseInt(stocks[stock].current_value.toFixed(2));
+     const sellAmount=currentStockValue*purchasedStocks[stock].myShares;
+     let tempdeafaultAmount=currentAmount+sellAmount;
+     let temppurchasedStocks={...purchasedStocks};
+     delete(temppurchasedStocks[stock]);
+     this.setState({purchasedStocks:temppurchasedStocks,deafaultAmount:tempdeafaultAmount});
     }
     getStockValueColor = (stock) =>{
-      if(stock.current_value < stock.history.slice(-2)[0].value){
+      const {stocks}=this.props;
+      const {purchasedStocks}=this.state;
+      let difference=stocks[stock].current_value.toFixed(2)-purchasedStocks[stock].value;
+      if(difference>0){
+        return 'green'
+      }
+      else if(difference<0)
+      {
         return 'red';
       }
-      else if(stock.current_value > stock.history.slice(-2)[0].value){
-        return 'green';
-      }
       else{
-        return null;
+
       }
+      // if(stock.current_value < stock.history.slice(-2)[0].value){
+      //   return 'red';
+      // }
+      // else if(stock.current_value > stock.history.slice(-2)[0].value){
+      //   return 'green';
+      // }
+      // else{
+      //   return null;
+      // }
     }
     reset=()=>{
       this.setState({purchasedStocks:[]})
@@ -85,10 +104,11 @@ class ClientStock extends Component {
       if(Object.keys(purchasedStocks).length>0)
       { 
          Object.keys(purchasedStocks).map((stock)=>{
-            totalAmount=totalAmount+this.props.stocks[stock].current_value*purchasedStocks[stock].myShares;
-            total=(deafaultAmount)-totalAmount;
+            totalAmount=totalAmount+(this.props.stocks[stock].current_value*purchasedStocks[stock].myShares);
+            total=(deafaultAmount)+totalAmount;
+            console.log(total)
       })
-      return total.toFixed(2);
+      return total;
     }
     else
       return deafaultAmount;
@@ -96,7 +116,7 @@ class ClientStock extends Component {
   
     render() { 
       const {purchasedStocks,deafaultAmount}=this.state;
-      const {stocks,user}=this.props;
+      const {stocks}=this.props;
       if(this.state.stocks===null) return <h1>Loading...</h1>
         return (  
             <>
@@ -106,7 +126,7 @@ class ClientStock extends Component {
              <Col>
                <Row className='client-stock-container-row'>
                     <div className='add-stock-amount'>
-                      <h1>{this.getAmount(purchasedStocks,deafaultAmount)}</h1>
+                      <h1>{this.getAmount(purchasedStocks,deafaultAmount).toFixed(2)}</h1>
                     </div>
                 </Row>
                 <Row>
@@ -130,7 +150,7 @@ class ClientStock extends Component {
                    </div>
                 </Row>
              </Col>
-             <Col>
+             <Col xs={12}>
                  <Card.Body className='client-stock-holding'>
                    <div className='client-stock-holding-container'> 
                       <div className='client-stock-holdings'>
@@ -146,8 +166,9 @@ class ClientStock extends Component {
                        <thead>
                           <tr>
                             <th>Name</th>
+                            <th>Buy value</th>
                             <th>
-                              Stock Value
+                              Live Value
                             </th>
                             <th>Shares owned</th>
                             <th>Net Value</th>
@@ -158,9 +179,10 @@ class ClientStock extends Component {
                         return (
                           <tr> 
                             <td>{stock}</td>
+                        <td>{purchasedStocks[stock].value}</td>
                             <td>{stocks[stock].current_value.toFixed(2)}</td>
                             <td>{purchasedStocks[stock].myShares}</td>
-                            <td className={this.getStockValueColor(stocks[stock])}>{(stocks[stock].current_value*purchasedStocks[stock].myShares).toFixed(2)}</td>
+                            <td className={this.getStockValueColor(stock)}>{(stocks[stock].current_value*purchasedStocks[stock].myShares).toFixed(2)}</td>
                             <td><Button onClick={()=>this.sellStocks(stock)}>sell</Button></td>
                           </tr>
                           )

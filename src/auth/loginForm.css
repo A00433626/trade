@@ -1,7 +1,5 @@
 .login-container{
    color: white;
-   /* margin-top: 20rem;
-   margin-bottom: 20rem; */
 }
 .login-body{
     background-color: white;
@@ -15,7 +13,7 @@
 	box-shadow: 0px 0px 4px 0px rgba(199, 199, 199, 1) !important;
     background-color: white;
     padding: 5px;
-    margin: 10rem 20rem;
+    margin: 0 auto;
 }
 .login-body img{
     padding: 2rem;
@@ -43,10 +41,9 @@
     width: -webkit-fill-available;
     justify-content: center;
   }
-@media screen and (max-width: 524px) {
-    .login-body{
-    margin: 3rem;
-    padding: 2rem;
-    height: 20rem; 
-    }
+.login-body-column{
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

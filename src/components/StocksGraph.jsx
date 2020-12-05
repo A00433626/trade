@@ -1,6 +1,5 @@
 import React from 'react'
 import {Line} from 'react-chartjs-2';
-import * as zoom from 'chartjs-plugin-zoom'
 import { chartJsConfig, chartColors, chartDataset } from '../chartConfig.js'
 
 class StocksGraph extends React.Component {
@@ -71,7 +70,7 @@ class StocksGraph extends React.Component {
 
   render() {
     return (
-      <div className={'card column'} style={{margin:'10px'}} >
+      <div className={'card column p-0'} style={{margin:'10px'}} >
         <div className='card-header'>
           <div className='card-header-title'>
             Graph
@@ -84,7 +83,6 @@ class StocksGraph extends React.Component {
               this.refs.chart.chartInstance.data.datasets.length > 0 ? 'Scroll/pinch to zoom, drag to pan.' : 'Click on any stocks on your left to see graphs.'
             }
           </p>
-          {/* <button className="button is-small is-pulled-right" onClick={this.resetZoom}>Reset zoom</button> */}
           <Line
             data={{datasets: []}}
             options={chartJsConfig}

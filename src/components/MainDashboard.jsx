@@ -6,7 +6,7 @@ import StocksLoaderStatus from "./StocksLoaderStatus.jsx";
 import './MainDashboard.css';
 import ClientStock from './clientStocks/ClientStock.jsx';
 
-const stocksUrl = 'ws://stocks.mnet.website/';
+const stocksUrl ='ws://stocks.mnet.website/';
 
 class MainDashboard extends Component {
     state = {
@@ -98,12 +98,12 @@ class MainDashboard extends Component {
                 <StocksGraph stocks={this.state.stocks} />
               </div>
               <div>
-               <ClientStock user={this.props.user} deafaultAmount={this.state.deafaultAmount} stocks={this.state.stocks}/>
+                <ClientStock user={this.props.user} deafaultAmount={this.state.deafaultAmount} stocks={this.state.stocks}/>
               </div>
               <div className={ this.props.showSpinner ? 'modal is-active' : 'modal' }>
                 <div className="modal-background"></div>
                   <StocksLoaderStatus connectionError={this.state.connectionError} />
-              </div>
+                </div>
             </div>
           );
         }

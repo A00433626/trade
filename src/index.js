@@ -4,9 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
+const domain="dev-gslwvf8o.us.auth0.com"
+// process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId="6pXEng5Rr5b2HzylZEtO7PAay9kcn2BC"
+
 ReactDOM.render(
   <BrowserRouter>
+  <Auth0Provider domain={domain} clientId={clientId} redirectUri='http://localhost:3001/dashboard'>
     <App />
+    </Auth0Provider>
     </BrowserRouter>,
   document.getElementById('root')
 );
