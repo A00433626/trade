@@ -9,8 +9,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import InfoBox from './common/InfoBox';
 import LogoutButton from './LogoutButton'
 import { withAuth0 } from '@auth0/auth0-react';
-import Loading from '../assets/loading.svg';
-
+import {DASHBOARD_URL} from '../DashboardConstants'
  class AccountSummary extends Component{
 
     state = { 
@@ -52,7 +51,7 @@ import Loading from '../assets/loading.svg';
         return ( 
             <Container className='account-summary-container'>
                 <div className="account-summary-main-container">
-                    <Link to='/dashboard'><i className="fa fa-caret-left fa-lg"></i> Back</Link>
+                    <Link to={`${DASHBOARD_URL}`}><i className="fa fa-caret-left fa-lg"></i> Back</Link>
                 <div className="account-summary-image">
                     {personalInfo ?(<img src={`${personalInfo.image.large}`} alt="image"/>) :(<Skeleton variant="circle" width={200} height={200} />)}
                 </div>

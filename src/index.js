@@ -11,7 +11,7 @@ const clientId="6pXEng5Rr5b2HzylZEtO7PAay9kcn2BC"
 
 ReactDOM.render(
   <BrowserRouter>
-  <Auth0Provider domain={domain} clientId={clientId} redirectUri='http://localhost:3001/dashboard'>
+  <Auth0Provider domain={domain} clientId={clientId} redirectUri='http://localhost:3001/trading/dashboard'>
     <App />
     </Auth0Provider>
     </BrowserRouter>,

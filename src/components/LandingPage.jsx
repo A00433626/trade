@@ -3,7 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 import './LandingPage.css';
 import {Avatar} from '@material-ui/core';
 import LogoutButton from './LogoutButton';
-
+import {APPLICATION_NAME} from '/Users/mcda/Desktop/Perennia Work/trade/src/DashboardConstants.jsx'
 class LandingPage extends Component{
     state = {   }
     render() { 
@@ -24,7 +24,7 @@ class LandingPage extends Component{
                   <Avatar/>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href="/accountsummary">Account </Dropdown.Item>
+                <Dropdown.Item href={`/${APPLICATION_NAME}/accountsummary`}>Account </Dropdown.Item>
                 <Dropdown.Item href="/"><LogoutButton/></Dropdown.Item>
               </Dropdown.Menu>
           </Dropdown>
