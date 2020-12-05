@@ -1,79 +1,98 @@
 import React, { Component } from 'react'
 import {Card,Button,Table,Row,Col,Form} from 'react-bootstrap'
 import './ClientStock.css';
+import { withAuth0 } from '@auth0/auth0-react';
+import Skeleton from '@material-ui/lab/Skeleton';
+
+
 class ClientStock extends Component {
     state = { 
         show:false,
         quantity:null,
         selectedStock:null,
-        purchasedStocks:[],
+        purchasedStocks:{},
         localUser:null,
-        deafaultAmount:100000,
+        defaultAmount:100000,
      }
     validation=()=>{
       let {quantity,selectedStock}=this.state;
       quantity=parseInt(quantity);
-      if(typeof quantity==="number" && quantity>=1 &&quantity<11){
-      if(typeof selectedStock==="string" && selectedStock!==null)
-        return true;
-      else 
-        return false;
-    }
+      if(typeof quantity==="number" && quantity>=1 &&quantity<11)
+      {
+        if(typeof selectedStock==="string" && selectedStock!==null)
+          return true;
+        else 
+          return false;
+      }
       else return false;
     }
     buyStocks=()=>{
-      let {quantity,selectedStock,purchasedStocks,deafaultAmount}=this.state;
+      let {quantity,selectedStock,purchasedStocks,defaultAmount,localUser}=this.state;
       let flag=0;
-      let tempdeafaultAmount=deafaultAmount;
+      let tempdeafaultAmount=defaultAmount;
+      let tempPurchasedStocks=purchasedStocks;
       const valid=this.validation();
       quantity=parseInt(quantity);
        if(valid){
-         let myShares=0,buyingPrice=0;
-         myShares+=quantity;
-        if(Object.keys(purchasedStocks).length===0)
-        {
-          buyingPrice=(this.props.stocks[selectedStock].current_value).toFixed(2);
-          tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
-          purchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
-         }
-         else{
-           //To find the existing stock
-          Object.keys(purchasedStocks).map(stock=>{
+          let myShares=0,buyingPrice=0;
+          myShares+=quantity;
+          if(Object.keys(purchasedStocks).length===0)
+          {
             buyingPrice=(this.props.stocks[selectedStock].current_value).toFixed(2);
-            if(stock===selectedStock)
-            {
-              myShares=purchasedStocks[stock].myShares+purchasedStocks[stock].quantity;
-              tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
-              purchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
-              flag=1;
-            }
-          })
-          //To add the new stock in the existing list
-          if(!flag){
             tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
-            purchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
+            tempPurchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
           }
-         }
+          else{
+            //To find the existing stock
+            Object.keys(purchasedStocks).map(stock=>{
+              buyingPrice=(this.props.stocks[selectedStock].current_value).toFixed(2);
+              if(stock===selectedStock)
+              {
+                myShares=purchasedStocks[stock].myShares+purchasedStocks[stock].quantity;
+                tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
+                tempPurchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
+                flag=1;
+              }
+            })
+            //To add the new stock in the existing list
+            if(!flag){
+              tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
+              tempPurchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
             }
+          }
+            
+        }
        else{
          alert("Please upload data properly");
        }
-      // localStorage.setItem(this.props.user.givenName.toLowerCase(),JSON.stringify(purchasedStocks));
-      this.setState({purchasedStocks,deafaultAmount:tempdeafaultAmount})
+      this.setState({purchasedStocks:tempPurchasedStocks,defaultAmount:tempdeafaultAmount})
+      let localStroageData=JSON.parse(localStorage.getItem(localUser));
+      localStroageData.purchasedStocks=tempPurchasedStocks;
+      localStroageData.defaultAmount=tempdeafaultAmount;
+      localStroageData.purchasedStocks=tempPurchasedStocks;
+      localStorage.setItem(localUser,JSON.stringify(localStroageData))
     }
+  
     sellStocks=(stock)=>{
-     const {deafaultAmount,purchasedStocks}=this.state;
+     const {defaultAmount,purchasedStocks,localUser}=this.state;
      const {stocks}=this.props;
-     let currentAmount= this.getAmount(purchasedStocks,deafaultAmount);
+     let currentAmount= this.getAmount(purchasedStocks,defaultAmount);
+     if(!stocks[stock]) return alert("Please wait for the Data to load. Thank you");
      let currentStockValue=parseInt(stocks[stock].current_value.toFixed(2));
      const sellAmount=currentStockValue*purchasedStocks[stock].myShares;
      let tempdeafaultAmount=currentAmount+sellAmount;
-     let temppurchasedStocks={...purchasedStocks};
+     let temppurchasedStocks=purchasedStocks;
      delete(temppurchasedStocks[stock]);
-     this.setState({purchasedStocks:temppurchasedStocks,deafaultAmount:tempdeafaultAmount});
+     this.setState({purchasedStocks:temppurchasedStocks,defaultAmount:tempdeafaultAmount});
+     let localStorageData=JSON.parse(localStorage.getItem(localUser));
+     if(localStorageData.purchasedStocks[stock]!==null){
+      delete localStorageData.purchasedStocks[stock]
+      localStorage.setItem(localUser,JSON.stringify(localStorageData));
+     }
     }
     getStockValueColor = (stock) =>{
       const {stocks}=this.props;
+      if(!stocks[stock]) return null;
       const {purchasedStocks}=this.state;
       let difference=stocks[stock].current_value.toFixed(2)-purchasedStocks[stock].value;
       if(difference>0){
@@ -84,49 +103,58 @@ class ClientStock extends Component {
         return 'red';
       }
       else{
-
+        return 'normal';
       }
-      // if(stock.current_value < stock.history.slice(-2)[0].value){
-      //   return 'red';
-      // }
-      // else if(stock.current_value > stock.history.slice(-2)[0].value){
-      //   return 'green';
-      // }
-      // else{
-      //   return null;
-      // }
     }
     reset=()=>{
+      const {defaultAmount,localUser}=this.state;
       this.setState({purchasedStocks:[]})
+      let data={'defaultAmount':defaultAmount,'purchasedStocks':{}};
+      localStorage.setItem(localUser,JSON.stringify(data));
     }
-    getAmount=(purchasedStocks,deafaultAmount)=>{
+    getAmount=(purchasedStocks,defaultAmount)=>{
       let totalAmount=0,total=0;
       if(Object.keys(purchasedStocks).length>0)
       { 
          Object.keys(purchasedStocks).map((stock)=>{
+           if(this.props.stocks[stock]){
             totalAmount=totalAmount+(this.props.stocks[stock].current_value*purchasedStocks[stock].myShares);
-            total=(deafaultAmount)+totalAmount;
-            console.log(total)
+            total=(defaultAmount)+totalAmount;
+           }
       })
       return total;
     }
     else
-      return deafaultAmount;
+      return defaultAmount;
     }
-  
+    componentDidMount=()=>{
+      const {defaultAmount}=this.state;
+      let currentUser=this.props.auth0.user.given_name;
+       if(localStorage.getItem(currentUser))
+       {
+         let data=JSON.parse(localStorage.getItem(currentUser));
+         let localStoragePurchasedStocks=data.purchasedStocks;
+         let localStorageDefaultAmount=data.defaultAmount;
+         this.setState({localUser:currentUser,defaultAmount:localStorageDefaultAmount,purchasedStocks:localStoragePurchasedStocks})
+       }
+       else
+       {
+         let data={'defaultAmount':defaultAmount,'purchasedStocks':{}};
+         localStorage.setItem(currentUser,JSON.stringify(data))
+       }
+    }
     render() { 
-      const {purchasedStocks,deafaultAmount}=this.state;
+      const {purchasedStocks,defaultAmount}=this.state;
       const {stocks}=this.props;
-      if(this.state.stocks===null) return <h1>Loading...</h1>
         return (  
             <>
-        <Card.Body className='client-stock-main-conatiner' >
+        {this.props.areStocksLoaded() ? <Card.Body className='client-stock-main-conatiner' >
         <div className='client-stock-container'>
            <Row>
              <Col>
                <Row className='client-stock-container-row'>
                     <div className='add-stock-amount'>
-                      <h1>{this.getAmount(purchasedStocks,deafaultAmount).toFixed(2)}</h1>
+                      <h1>{this.getAmount(purchasedStocks,defaultAmount).toFixed(2)}</h1>
                     </div>
                 </Row>
                 <Row>
@@ -179,10 +207,10 @@ class ClientStock extends Component {
                         return (
                           <tr> 
                             <td>{stock}</td>
-                        <td>{purchasedStocks[stock].value}</td>
-                            <td>{stocks[stock].current_value.toFixed(2)}</td>
-                            <td>{purchasedStocks[stock].myShares}</td>
-                            <td className={this.getStockValueColor(stock)}>{(stocks[stock].current_value*purchasedStocks[stock].myShares).toFixed(2)}</td>
+                            <td>{purchasedStocks? purchasedStocks[stock].value:<Skeleton variant='rect' width='50px'/>}</td>
+                            <td>{stocks[stock] ? stocks[stock].current_value.toFixed(2):<Skeleton variant='rect' width='50px'/>}</td>
+                            <td>{purchasedStocks? purchasedStocks[stock].myShares:<Skeleton variant='rect' width='50px'/>}</td>
+                            <td className={this.getStockValueColor(stock)}>{stocks[stock] ? (stocks[stock].current_value*purchasedStocks[stock].myShares).toFixed(2):<Skeleton variant='rect' width='50px'/>}</td>
                             <td><Button onClick={()=>this.sellStocks(stock)}>sell</Button></td>
                           </tr>
                           )
@@ -194,10 +222,10 @@ class ClientStock extends Component {
             </Col>
             </Row>
         </div>
-      </Card.Body>
+      </Card.Body>: <Skeleton variant='react' height='20rem' width='100%'/>}
       </>
       );
     }
 }
  
-export default ClientStock;
+export default withAuth0(ClientStock);

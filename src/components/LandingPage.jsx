@@ -1,37 +1,29 @@
 import React, { Component } from 'react'
-import { Dropdown } from 'react-bootstrap';
 import './LandingPage.css';
-import {Avatar} from '@material-ui/core';
 import LogoutButton from './LogoutButton';
 import {APPLICATION_NAME} from '/Users/mcda/Desktop/Perennia Work/trade/src/DashboardConstants.jsx'
+import {withAuth0} from '@auth0/auth0-react';
 class LandingPage extends Component{
-    state = {   }
     render() { 
+      const {user}=this.props.auth0;
        return (
      <div className="main-conatianer-header">
          {/* Account Logo */}
          <div className="main-conatianer-header-logo">
-             Company Name
+            {user? <a href={`/${APPLICATION_NAME}/dashboard`}>Company</a>:'Company'}
          </div>
          {/* icons */}
-         <div className="menu-icons">
+        {user && (<div className="menu-icons">
          <div className="menu-icons-anchor">
-           <a href='#'>notification</a>
+           <a href={`/${APPLICATION_NAME}/accountsummary`}>Account</a>
          </div>
-         <div className="menu-icons-dropdown">
-            <Dropdown>
-              <Dropdown.Toggle variant='none' className="dropdown-basic">
-                  <Avatar/>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href={`/${APPLICATION_NAME}/accountsummary`}>Account </Dropdown.Item>
-                <Dropdown.Item href="/"><LogoutButton/></Dropdown.Item>
-              </Dropdown.Menu>
-          </Dropdown>
+         <div className="menu-icons-signout">
+         <LogoutButton/>
           </div>
-         </div>
+         </div>)
+        }
      </div>
        );
     }
 }
-export default LandingPage;
+export default withAuth0(LandingPage);

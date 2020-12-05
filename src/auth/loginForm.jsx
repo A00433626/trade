@@ -1,20 +1,12 @@
 import React from 'react'
-import './loginForm.css'
-import {Card,Row,Col,Container} from 'react-bootstrap';
-import LoginButton from '../components/LoginButton';
-import {Button} from 'react-bootstrap';
 import { withAuth0,useAuth0 } from '@auth0/auth0-react';
-import {ACCOUNT_URL,DASHBOARD_URL} from '../DashboardConstants'
-const LoginForm = (props) => {
-    const { loginWithRedirect, isAuthenticated,user } = useAuth0();
-    console.log(isAuthenticated,props);
+import {Button} from 'react-bootstrap';
+import {Card,Row,Col,Container} from 'react-bootstrap';
+import './loginForm.css'
+const LoginForm = () => {
+    const { loginWithRedirect, isAuthenticated } = useAuth0();
     if(isAuthenticated){
-        if(props.match.path===DASHBOARD_URL)
-           props.location.push(DASHBOARD_URL)
-        else if(props.match.path===ACCOUNT_URL){
-            props.location.push(ACCOUNT_URL)
-        }
-        loginWithRedirect()
+         loginWithRedirect()
     }
     else{
         return ( 

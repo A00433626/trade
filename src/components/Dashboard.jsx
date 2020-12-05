@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './Dashboard.css';
 import UnsafeScriptsWarning from "./UnsafeScriptsWarning";
 import MainDashboard from './MainDashboard';
-import LandingPage from './LandingPage';
-
 class Dashboard extends Component {
 
   state = {
@@ -30,18 +28,12 @@ class Dashboard extends Component {
     if (this.state.hasError) {
       return <UnsafeScriptsWarning />;
     }
-    console.log(this.props);
     return (
-      <div className="App">
-          <div className="header-container">
-             <LandingPage/>
-         </div>
          <div className="app-body">
             <div className="main-body-container">
-              <MainDashboard hideSpinner={this.hideSpinner} user={this.props.user} showSpinner={this.state.showSpinner} />
+               <MainDashboard hideSpinner={this.hideSpinner} user={this.props.user} showSpinner={this.state.showSpinner} />
             </div>
-         </div>
-      </div>
+          </div>
     );
   }
 }

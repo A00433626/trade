@@ -4,10 +4,8 @@ import { Button} from 'react-bootstrap';
 
 const LogoutButton = () => {
   const { logout, isAuthenticated } = useAuth0();
-console.log(isAuthenticated);
   return (
     isAuthenticated && (
-      // <button onClick={() => logout()}>
      <Button variant='danger' onClick={()=>{logout()}}>SignOut</Button>  
     )
   )

@@ -7,8 +7,7 @@
 
 }
 .main-conatianer-header-logo{
-    margin-left: 3.1rem;
-    height: 2rem;
+    margin-left: 3rem;
     padding: 10px;
     display: flex;
 }
@@ -57,23 +56,26 @@
     color: gray;
     
 }
-
-.dropdown-item a :hover{
-    color: black;
-    background-color: unset !important;
-
+.menu-icons-signout{
+    padding: 10px;
 }
+
+
 @media(max-width:500px){
 .main-conatianer-header-logo{
-    display: none;
+    /* display: none; */
+    margin-left: 10px;
+    padding-top:0px;
+    padding-bottom:0px;
 }
 .menu-icons-anchor{
     display: flex;
+    padding: 10px;
 }
-.menu-icons{
-    margin: 10px;
-    width: -webkit-fill-available;
-    display: flex;
-    justify-content: space-between;
+.menu-icons-anchor a{
+    padding: 0;
+}
+.menu-icons-signout{
+    padding: 10px;
 }
 }
