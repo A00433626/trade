@@ -66,11 +66,11 @@ class ClientStock extends Component {
          alert("Please upload data properly");
        }
       this.setState({purchasedStocks:tempPurchasedStocks,defaultAmount:tempdeafaultAmount})
-      let localStroageData=JSON.parse(localStorage.getItem(localUser));
-      localStroageData.purchasedStocks=tempPurchasedStocks;
-      localStroageData.defaultAmount=tempdeafaultAmount;
-      localStroageData.purchasedStocks=tempPurchasedStocks;
-      localStorage.setItem(localUser,JSON.stringify(localStroageData))
+      let localStorageData=JSON.parse(localStorage.getItem(localUser));
+      localStorageData.purchasedStocks=tempPurchasedStocks;
+      localStorageData.defaultAmount=tempdeafaultAmount;
+      localStorageData.purchasedStocks=tempPurchasedStocks;
+      localStorage.setItem(localUser,JSON.stringify(localStorageData))
     }
   
     sellStocks=(stock)=>{
@@ -85,6 +85,7 @@ class ClientStock extends Component {
      delete(temppurchasedStocks[stock]);
      this.setState({purchasedStocks:temppurchasedStocks,defaultAmount:tempdeafaultAmount});
      let localStorageData=JSON.parse(localStorage.getItem(localUser));
+     if(localStorageData===null) return
      if(localStorageData.purchasedStocks[stock]!==null){
       delete localStorageData.purchasedStocks[stock]
       localStorage.setItem(localUser,JSON.stringify(localStorageData));
@@ -107,9 +108,11 @@ class ClientStock extends Component {
       }
     }
     reset=()=>{
-      const {defaultAmount,localUser}=this.state;
-      this.setState({purchasedStocks:[]})
-      let data={'defaultAmount':defaultAmount,'purchasedStocks':{}};
+      const {localUser}=this.state;
+      let defaultAmount=100000;
+      let purchasedStocks={};
+      this.setState({defaultAmount ,purchasedStocks})
+      let data={'defaultAmount':defaultAmount,'purchasedStocks':purchasedStocks};
       localStorage.setItem(localUser,JSON.stringify(data));
     }
     getAmount=(purchasedStocks,defaultAmount)=>{
@@ -151,6 +154,7 @@ class ClientStock extends Component {
         {this.props.areStocksLoaded() ? <Card.Body className='client-stock-main-conatiner' >
         <div className='client-stock-container'>
            <Row>
+             {/* Stock Form buying*/}
              <Col>
                <Row className='client-stock-container-row'>
                     <div className='add-stock-amount'>
@@ -178,6 +182,7 @@ class ClientStock extends Component {
                    </div>
                 </Row>
              </Col>
+             {/* My Stock Listing */}
              <Col xs={12}>
                  <Card.Body className='client-stock-holding'>
                    <div className='client-stock-holding-container'> 
