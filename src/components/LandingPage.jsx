@@ -10,7 +10,7 @@ class LandingPage extends Component{
      <div className="main-conatianer-header">
          {/* Account Logo */}
          <div className="main-conatianer-header-logo">
-            {user? <a href={`/${APPLICATION_NAME}/dashboard`}>Company</a>:'Company'}
+            {user? <a href={`/${APPLICATION_NAME}/dashboard`}>logo</a>:'logo'}
          </div>
          {/* icons */}
         {user && (<div className="menu-icons">

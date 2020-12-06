@@ -48,7 +48,7 @@ class ClientStock extends Component {
               buyingPrice=(this.props.stocks[selectedStock].current_value).toFixed(2);
               if(stock===selectedStock)
               {
-                myShares=purchasedStocks[stock].myShares+purchasedStocks[stock].quantity;
+                myShares=purchasedStocks[stock].myShares+quantity;
                 tempdeafaultAmount=tempdeafaultAmount-(buyingPrice*myShares)
                 tempPurchasedStocks[selectedStock]={"value":buyingPrice,"quantity":quantity, "myShares":myShares}
                 flag=1;
@@ -78,17 +78,18 @@ class ClientStock extends Component {
     sellStocks=(stock)=>{
      const {defaultAmount,purchasedStocks,localUser}=this.state;
      const {stocks}=this.props;
-     let currentAmount= this.getAmount(purchasedStocks,defaultAmount);
+     let currentAmount= defaultAmount;
      if(!stocks[stock]) return alert("Please wait for the Data to load. Thank you");
      let currentStockValue=parseInt(stocks[stock].current_value.toFixed(2));
      const sellAmount=currentStockValue*purchasedStocks[stock].myShares;
-     let tempdeafaultAmount=currentAmount+sellAmount;
+     let tempdeafaultAmount=(currentAmount+sellAmount).toFixed(2);
      let temppurchasedStocks=purchasedStocks;
      delete(temppurchasedStocks[stock]);
      this.setState({purchasedStocks:temppurchasedStocks,defaultAmount:tempdeafaultAmount});
      let localStorageData=JSON.parse(localStorage.getItem(localUser));
      if(localStorageData===null) return
      if(localStorageData.purchasedStocks[stock]!==null){
+      localStorageData.defaultAmount=tempdeafaultAmount;
       delete localStorageData.purchasedStocks[stock]
       localStorage.setItem(localUser,JSON.stringify(localStorageData));
      }
@@ -117,21 +118,6 @@ class ClientStock extends Component {
       let data={'defaultAmount':defaultAmount,'purchasedStocks':purchasedStocks};
       localStorage.setItem(localUser,JSON.stringify(data));
     }
-    getAmount=(purchasedStocks,defaultAmount)=>{
-      let totalAmount=0,total=0;
-      if(Object.keys(purchasedStocks).length>0)
-      { 
-         Object.keys(purchasedStocks).map((stock)=>{
-           if(this.props.stocks[stock]){
-            totalAmount=totalAmount+(this.props.stocks[stock].current_value*purchasedStocks[stock].myShares);
-            total=(defaultAmount)+totalAmount;
-           }
-      })
-      return total;
-    }
-    else
-      return defaultAmount;
-    }
     componentDidMount=()=>{
       const {defaultAmount}=this.state;
       let currentUser=this.props.auth0.user.given_name;
@@ -149,6 +135,34 @@ class ClientStock extends Component {
          this.setState({localUser:currentUser})
        }
     }
+    getPL=(stock)=>{
+      const {stocks}=this.props;
+      const {purchasedStocks}=this.state;
+      if(stock===null|| stocks[stock]===null||purchasedStocks[stock]===null) return null;
+      const myShares=purchasedStocks[stock].myShares;
+      let costPrice=purchasedStocks[stock].value;
+      let sellingPrice=stocks[stock].current_value;
+      let pl=0
+      let percentage=0;
+      let resultString;
+      pl=((sellingPrice-costPrice)*purchasedStocks[stock].myShares).toFixed(2)
+      percentage=(pl/(myShares*costPrice))*100;
+      percentage=percentage.toFixed(2);
+      if(percentage<0)
+      {
+        resultString=`${pl} (${percentage}%)`;
+      }
+      else if(percentage>0)
+      {
+        resultString=`${pl} (+${percentage}%)`;
+      }
+      else{
+        resultString='0';
+      }
+      return resultString;
+   
+
+    }
     render() { 
       const {purchasedStocks,defaultAmount}=this.state;
       const {stocks}=this.props;
@@ -161,7 +175,7 @@ class ClientStock extends Component {
              <Col>
                <Row className='client-stock-container-row'>
                     <div className='add-stock-amount'>
-                      <h1>{this.getAmount(purchasedStocks,defaultAmount).toFixed(2)}</h1>
+                      <h1>{defaultAmount}</h1>
                     </div>
                 </Row>
                 <Row>
@@ -207,7 +221,7 @@ class ClientStock extends Component {
                               Live Value
                             </th>
                             <th>Shares owned</th>
-                            <th>Net Value</th>
+                            <th>P/L</th>
                           </tr>
                        </thead>
                        <tbody>
@@ -218,7 +232,7 @@ class ClientStock extends Component {
                             <td>{purchasedStocks? purchasedStocks[stock].value:<Skeleton variant='rect' width='50px'/>}</td>
                             <td>{stocks[stock] ? stocks[stock].current_value.toFixed(2):<Skeleton variant='rect' width='50px'/>}</td>
                             <td>{purchasedStocks? purchasedStocks[stock].myShares:<Skeleton variant='rect' width='50px'/>}</td>
-                            <td className={this.getStockValueColor(stock)}>{stocks[stock] ? (stocks[stock].current_value*purchasedStocks[stock].myShares).toFixed(2):<Skeleton variant='rect' width='50px'/>}</td>
+                            <td className={this.getStockValueColor(stock)}>{stocks[stock] ? (this.getPL(stock)):<Skeleton variant='rect' width='50px'/>}</td>
                             <td><Button onClick={()=>this.sellStocks(stock)}>sell</Button></td>
                           </tr>
                           )
