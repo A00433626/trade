@@ -55,7 +55,7 @@ class MainDashboard extends Component {
           new_stocks[stock_name].is_selected = !new_stocks[stock_name].is_selected
           this.setState({ stocks: new_stocks })
         }
-      
+      // reset
         resetData = () => {
           let new_stocks = this.state.stocks;
           // resetting the history value
@@ -66,7 +66,7 @@ class MainDashboard extends Component {
        
           this.setState({ stocks: new_stocks });
         }
-        
+        // Checks if stocks are loaded or not
         areStocksLoaded = () => {
           return Object.keys(this.state.stocks).length > 0;
         }

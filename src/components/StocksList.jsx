@@ -2,6 +2,7 @@ import React from 'react'
 import { Detector } from "react-detect-offline";
 import StockRow from './StockRow.jsx'
 import MarketTrendArrow from './MarketTrendArrow.jsx'
+import {Table} from 'react-bootstrap'
 import './StocksList.css'
 const StocksList = (props) => {
   return (
@@ -23,8 +24,8 @@ const StocksList = (props) => {
       </div>
       <div className='card-content px-2'>
         { props.areStocksLoaded() ? <p className='is-size-7 has-text-info'>Click on a stock to select/unselect</p> : null }
-        <table className='table is-bordered'>
-          <thead>
+        <Table bordered hover responsive>
+          <thead className="thead-dark">
             <tr>
               <th>Name</th>
               <th>
@@ -50,7 +51,7 @@ const StocksList = (props) => {
             )}
             { props.areStocksLoaded() ? null : <tr><td colSpan='4'>No stocks loaded yet!</td></tr> }
           </tbody>
-        </table>
+        </Table>
        </div>
     </div>
   );

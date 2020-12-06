@@ -9,11 +9,11 @@ class Dashboard extends Component {
     showSpinner: true
   }
 
-  static getDerivedStateFromError(error) {
-    // Update state so the next render will show the fallback UI.
-    console.log('some error has occured');
-    return { hasError: true };
-  }
+  // static getDerivedStateFromError(error) {
+  //   // Update state so the next render will show the fallback UI.
+  //   console.log('some error has occured');
+  //   return { hasError: true };
+  // }
 
   componentDidCatch(error, info) {
     // You can also log the error to an error reporting service

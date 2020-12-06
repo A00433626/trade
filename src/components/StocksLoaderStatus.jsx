@@ -10,7 +10,7 @@ const StocksLoaderStatus = props => {
     );
   } else {
     return (
-      <div className=' is-large is-success'>
+      <div className='is-large is-success'>
         <span className='loader'> &nbsp;</span>
       </div>
     );
