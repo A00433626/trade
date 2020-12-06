@@ -67,10 +67,12 @@ class ClientStock extends Component {
        }
       this.setState({purchasedStocks:tempPurchasedStocks,defaultAmount:tempdeafaultAmount})
       let localStorageData=JSON.parse(localStorage.getItem(localUser));
+      if(localStorageData){
       localStorageData.purchasedStocks=tempPurchasedStocks;
       localStorageData.defaultAmount=tempdeafaultAmount;
       localStorageData.purchasedStocks=tempPurchasedStocks;
       localStorage.setItem(localUser,JSON.stringify(localStorageData))
+      }
     }
   
     sellStocks=(stock)=>{
@@ -144,6 +146,7 @@ class ClientStock extends Component {
        {
          let data={'defaultAmount':defaultAmount,'purchasedStocks':{}};
          localStorage.setItem(currentUser,JSON.stringify(data))
+         this.setState({localUser:currentUser})
        }
     }
     render() { 
