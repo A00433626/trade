@@ -11,7 +11,7 @@ class LandingPage extends Component {
 				{/* Account Logo */}
 				<div className="main-conatianer-header-logo">
 					{/* {user ?  */}
-					<a href={`dashboard`} style={{ textDecoration: "none" }}>
+					<a href={`${DASHBOARD_URL}`} style={{ textDecoration: "none" }}>
 						logo
 					</a>
 					{/* : "logo"} */}
@@ -20,7 +20,7 @@ class LandingPage extends Component {
 				{/* {user && ( */}
 				<div className="menu-icons">
 					<div className="menu-icons-anchor">
-						<a href={`accountsummary`}>Account</a>
+						<a href={`${ACCOUNT_URL}`}>Account</a>
 					</div>
 					<div className="menu-icons-signout">
 						<LogoutButton />
