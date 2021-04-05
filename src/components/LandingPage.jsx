@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import "./LandingPage.css";
 import LogoutButton from "./LogoutButton";
-// import { APPLICATION_NAME } from "../DashboardConstants.jsx";
+import {
+	APPLICATION_NAM,
+	DASHBOARD_URL,
+	ACCOUNT_URL,
+} from "../DashboardConstants.jsx";
 import { withAuth0 } from "@auth0/auth0-react";
 class LandingPage extends Component {
 	render() {

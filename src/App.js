@@ -27,12 +27,12 @@ class App extends Component {
 						path={`${DASHBOARD_URL}`}
 						component={Dashboard}
 						{...this.props}></PrivateRoute> */}
-					<Route path={ACCOUNT_URL} component={AccountSummary}></Route>
+					<Route path={`/${ACCOUNT_URL}`} component={AccountSummary}></Route>
 					<Route
-						path={DASHBOARD_URL}
+						path={`/${DASHBOARD_URL}`}
 						component={Dashboard}
 						{...this.props}></Route>
-					<Redirect from="/" to={DASHBOARD_URL} />
+					<Redirect from="/" to={`/${DASHBOARD_URL}`} />
 				</Switch>
 			</div>
 		);
