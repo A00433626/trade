@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./LandingPage.css";
 import LogoutButton from "./LogoutButton";
+import { APPLICATION_NAME } from "../DashboardConstants.jsx";
 import { withAuth0 } from "@auth0/auth0-react";
 class LandingPage extends Component {
 	render() {
@@ -10,7 +11,9 @@ class LandingPage extends Component {
 				{/* Account Logo */}
 				<div className="main-conatianer-header-logo">
 					{/* {user ?  */}
-					<a href={`/dashboard`} style={{ textDecoration: "none" }}>
+					<a
+						href={`/${APPLICATION_NAME}/dashboard`}
+						style={{ textDecoration: "none" }}>
 						logo
 					</a>
 					{/* : "logo"} */}
@@ -19,7 +22,7 @@ class LandingPage extends Component {
 				{/* {user && ( */}
 				<div className="menu-icons">
 					<div className="menu-icons-anchor">
-						<a href={`/accountsummary`}>Account</a>
+						<a href={`/${APPLICATION_NAME}/accountsummary`}>Account</a>
 					</div>
 					<div className="menu-icons-signout">
 						<LogoutButton />
